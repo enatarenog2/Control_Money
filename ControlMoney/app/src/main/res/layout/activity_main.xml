@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F5F1FF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/titulo_controlmoney"
+            android:textColor="#6D28D9"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/mensaje_crear_cuenta"
+            android:textColor="#716B80"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:background="@drawable/fondo_tarjeta"
+            android:elevation="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/etiqueta_nombre"
+                android:textColor="#302443"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etNombre"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="16dp"
+                android:autofillHints="personName"
+                android:background="@drawable/fondo_campo"
+                android:hint="@string/hint_nombre"
+                android:inputType="textCapWords"
+                android:padding="12dp"
+                android:textColor="#27223A"
+                android:textColorHint="#91899F"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/etiqueta_apellido"
+                android:textColor="#302443"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etApellido"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="16dp"
+                android:autofillHints="personFamilyName"
+                android:background="@drawable/fondo_campo"
+                android:hint="@string/hint_apellido"
+                android:inputType="textCapWords"
+                android:padding="12dp"
+                android:textColor="#27223A"
+                android:textColorHint="#91899F"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/etiqueta_correo"
+                android:textColor="#302443"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="16dp"
+                android:autofillHints="emailAddress"
+                android:background="@drawable/fondo_campo"
+                android:hint="@string/hint_correo"
+                android:inputType="textEmailAddress"
+                android:padding="12dp"
+                android:textColor="#27223A"
+                android:textColorHint="#91899F"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/etiqueta_fecha_nacimiento"
+                android:textColor="#302443"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnFechaNacimiento"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/fondo_boton_morado"
+                android:text="@string/seleccionar_fecha"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btnCrearCuenta"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/fondo_boton_morado"
+                android:text="@string/crear_cuenta"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="Tus finanzas, más fáciles de organizar"
+            android:textColor="#716B80"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F1FF"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registrar movimiento"
+            android:textColor="#6D28D9"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registra tus ingresos y gastos"
+            android:textColor="#716B80"
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fondo_tarjeta"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de movimiento"
+                android:textColor="#302443"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <Spinner
+                android:id="@+id/spTipoMovimiento"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/fondo_campo"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Descripción"
+                android:textColor="#302443"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/etDescripcionMovimiento"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/fondo_campo"
+                android:hint="Ej. Compra de alimentos"
+                android:inputType="textCapSentences"
+                android:padding="12dp"
+                android:textColor="#302443"
+                android:textColorHint="#716B80"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Monto (Q)"
+                android:textColor="#302443"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/etMontoMovimiento"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/fondo_campo"
+                android:hint="Ej. 150.00"
+                android:inputType="numberDecimal"
+                android:padding="12dp"
+                android:textColor="#302443"
+                android:textColorHint="#716B80"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Categoría"
+                android:textColor="#302443"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="8dp" />
+
+            <Spinner
+                android:id="@+id/spCategoriaMovimiento"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/fondo_campo"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fecha del movimiento"
+                android:textColor="#302443"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/btnFechaMovimiento"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/fondo_campo"
+                android:backgroundTint="#FFFFFF"
+                android:text="Seleccionar fecha"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btnGuardarMovimiento"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="26dp"
+                android:background="@drawable/fondo_boton_morado"
+                android:backgroundTint="#6D28D9"
+                android:text="Guardar movimiento"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnCancelarMovimiento"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#EDE4FF"
+                android:text="Cancelar"
+                android:textAllCaps="false"
+                android:textColor="#4C1D95"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

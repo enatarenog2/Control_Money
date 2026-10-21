@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">ControlMoney</string>
+
+    <string name="titulo_controlmoney">ControlMoney</string>
+    <string name="mensaje_crear_cuenta">Crea tu cuenta para comenzar a controlar tu dinero.</string>
+
+    <string name="etiqueta_nombre">Nombre</string>
+    <string name="hint_nombre">Ingresa tu nombre</string>
+
+    <string name="etiqueta_apellido">Apellido</string>
+    <string name="hint_apellido">Ingresa tu apellido</string>
+
+    <string name="etiqueta_correo">Correo electrónico</string>
+    <string name="hint_correo">ejemplo@correo.com</string>
+
+    <string name="etiqueta_fecha_nacimiento">Fecha de nacimiento</string>
+    <string name="seleccionar_fecha">Seleccionar fecha</string>
+    <string name="crear_cuenta">Crear cuenta</string>
+
+
+</resources>
