@@ -2,8 +2,11 @@ package umg.edu.gt.progra2.controlgastos
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import umg.edu.gt.progra2.controlgastos.databinding.ActivityInicioBinding
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import java.util.Locale
 
 class InicioActivity : AppCompatActivity() {
 
@@ -40,4 +43,37 @@ class InicioActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        actualizarResumen()
+    }
+
+    private fun actualizarResumen() {
+        lifecycleScope.launch {
+            try {
+                val control = ControlGastosProvider.instancia
+
+                val ingresos = control.calcularTotalIngresos()
+                val gastos = control.calcularTotalGastos()
+                val saldo = control.calcularSaldo()
+
+                binding.tvTotalIngresos.text = formatoQuetzales(ingresos)
+                binding.tvTotalGastos.text = formatoQuetzales(gastos)
+                binding.tvSaldoDisponible.text = formatoQuetzales(saldo)
+
+            } catch (e: Exception) {
+                android.widget.Toast.makeText(
+                    this@InicioActivity,
+                    "No se pudo actualizar el resumen financiero",
+                    android.widget.Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun formatoQuetzales(monto: Double): String {
+        return String.format(Locale.US, "Q %,.2f", monto)
+    }
+
 }
