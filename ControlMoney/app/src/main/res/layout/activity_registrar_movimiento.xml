@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:background="@drawable/fondo_campo"
-                android:hint="Ej. Compra de alimentos"
+                android:hint=""
                 android:inputType="textCapSentences"
                 android:padding="12dp"
                 android:textColor="#302443"

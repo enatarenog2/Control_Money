@@ -17,5 +17,18 @@
     <string name="seleccionar_fecha">Seleccionar fecha</string>
     <string name="crear_cuenta">Crear cuenta</string>
 
+    <string name="filter_all">Todos</string>
+    <string name="filter_income">Ingresos</string>
+    <string name="filter_expenses">Gastos</string>
+
+    <string name="movement_type_income">Ingreso</string>
+    <string name="movement_type_expense">Gasto</string>
+
+    <string name="movement_detail">%1$s · %2$s · %3$s</string>
+    <string name="movement_amount">%1$s %2$s</string>
+
+    <string name="no_movements">No hay movimientos para mostrar.</string>
+    <string name="error_loading_movements">No se pudieron cargar los movimientos</string>
+
 
 </resources>
