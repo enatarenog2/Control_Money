@@ -28,8 +28,6 @@
             android:textSize="16sp"
             android:layout_marginBottom="24dp" />
 
-        <!-- Selector del período -->
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,7 +45,7 @@
             android:padding="8dp"
             android:layout_marginBottom="20dp" />
 
-        <!-- Balance -->
+        <!-- Balance del período -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,10 +63,11 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/tvBalancePeriodo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Q 2,500.00"
+                android:text="Q 0.00"
                 android:textColor="#FFFFFF"
                 android:textSize="30sp"
                 android:textStyle="bold" />
@@ -83,7 +82,7 @@
 
         </LinearLayout>
 
-        <!-- Ingresos -->
+        <!-- Total de ingresos -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,17 +100,18 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/tvIngresosPeriodo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Q 4,000.00"
+                android:text="Q 0.00"
                 android:textColor="#238653"
                 android:textSize="23sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
-        <!-- Gastos -->
+        <!-- Total de gastos -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -129,17 +129,18 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/tvGastosPeriodo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Q 1,500.00"
+                android:text="Q 0.00"
                 android:textColor="#D14343"
                 android:textSize="23sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
-        <!-- Distribución por categorías -->
+        <!-- Gastos por categoría -->
 
         <TextView
             android:layout_width="match_parent"
@@ -151,57 +152,13 @@
             android:layout_marginBottom="12dp" />
 
         <LinearLayout
+            android:id="@+id/contenedorCategorias"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/fondo_tarjeta"
             android:orientation="vertical"
             android:padding="18dp"
             android:layout_marginBottom="20dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Alimentación"
-                android:textColor="#302443"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Q 600.00"
-                android:textColor="#6D28D9"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:background="#EDE4FF" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Transporte"
-                android:textColor="#302443"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Q 300.00"
-                android:textColor="#6D28D9"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:layout_marginTop="8dp"
-                android:background="#EDE4FF" />
 
         </LinearLayout>
 
