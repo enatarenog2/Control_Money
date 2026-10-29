@@ -12,12 +12,17 @@ import umg.edu.gt.progra2.controlgastos.modelo.Categoria
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import androidx.appcompat.app.AlertDialog
+import umg.edu.gt.progra2.controlgastos.modelo.Gasto
+import umg.edu.gt.progra2.controlgastos.modelo.TipoMovimiento
 
 class RegistrarMovimientoActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegistrarMovimientoBinding
 
     private var fechaSeleccionada = LocalDate.now()
+
+    private var movimientoId: Int = -1
 
     private val formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
@@ -40,6 +45,80 @@ class RegistrarMovimientoActivity : AppCompatActivity() {
         configurarDesplegables()
         configurarFecha()
         configurarBotones()
+
+        movimientoId = intent.getIntExtra("movimiento_id", -1)
+
+        if (movimientoId != -1) {
+            binding.btnEliminarMovimiento.visibility = android.view.View.VISIBLE
+            cargarMovimiento()
+        } else {
+            binding.btnEliminarMovimiento.visibility = android.view.View.GONE
+        }
+    }
+    private fun cargarMovimiento() {
+        lifecycleScope.launch {
+            try {
+                val movimiento = ControlGastosProvider.instancia
+                    .buscarPorId(movimientoId)
+
+                if (movimiento == null) {
+                    Toast.makeText(
+                        this@RegistrarMovimientoActivity,
+                        "No se encontró el movimiento",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                    finish()
+                    return@launch
+                }
+
+                binding.etDescripcionMovimiento.setText(
+                    movimiento.descripcion
+                )
+
+                binding.etMontoMovimiento.setText(
+                    movimiento.monto.toString()
+                )
+
+                val tipoTexto = if (
+                    movimiento.tipo == TipoMovimiento.INGRESO
+                ) "Ingreso" else "Gasto"
+
+                val posicionTipo = tiposMovimiento.indexOf(tipoTexto)
+                if (posicionTipo >= 0) {
+                    binding.spTipoMovimiento.setSelection(posicionTipo)
+                }
+
+                val categoriaTexto = when (movimiento.categoria) {
+                    Categoria.ALIMENTOS -> "Alimentos"
+                    Categoria.TRANSPORTE -> "Transporte"
+                    Categoria.SERVICIOS -> "Servicios"
+                    Categoria.ENTRETENIMIENTO -> "Entretenimiento"
+                    Categoria.OTROS -> "Otros"
+                }
+
+                val posicionCategoria = categorias.indexOf(categoriaTexto)
+                if (posicionCategoria >= 0) {
+                    binding.spCategoriaMovimiento.setSelection(
+                        posicionCategoria
+                    )
+                }
+
+                fechaSeleccionada = movimiento.fecha
+
+                binding.btnFechaMovimiento.text =
+                    fechaSeleccionada.format(formatoFecha)
+
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@RegistrarMovimientoActivity,
+                    "No se pudo cargar el movimiento: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                finish()
+            }
+        }
     }
 
     private fun configurarDesplegables() {
@@ -102,7 +181,11 @@ class RegistrarMovimientoActivity : AppCompatActivity() {
         binding.btnCancelarMovimiento.setOnClickListener {
             finish()
         }
+        binding.btnEliminarMovimiento.setOnClickListener {
+            confirmarEliminacion()
+        }
     }
+
 
     private fun guardarMovimiento() {
         val descripcion = binding.etDescripcionMovimiento.text
@@ -144,39 +227,126 @@ class RegistrarMovimientoActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                if (tipo == "Ingreso") {
-                    ControlGastosProvider.instancia.registrarIngreso(
-                        descripcion = descripcion,
-                        monto = monto,
-                        categoria = categoria,
-                        fecha = fechaSeleccionada
-                    )
-                } else {
-                    ControlGastosProvider.instancia.registrarGasto(
-                        descripcion = descripcion,
-                        monto = monto,
-                        categoria = categoria,
-                        fecha = fechaSeleccionada
-                    )
-                }
+                val control = ControlGastosProvider.instancia
 
-                Toast.makeText(
-                    this@RegistrarMovimientoActivity,
-                    "$tipo registrado correctamente",
-                    Toast.LENGTH_SHORT
-                ).show()
+                if (movimientoId != -1) {
+                    // Actualizar el movimiento existente.
+                    val movimientoActual = control.buscarPorId(movimientoId)
+
+                    if (movimientoActual == null) {
+                        Toast.makeText(
+                            this@RegistrarMovimientoActivity,
+                            "No se encontró el movimiento",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@launch
+                    }
+
+                    val movimientoActualizado = movimientoActual.copy(
+                        descripcion = descripcion,
+                        monto = monto,
+                        categoria = categoria,
+                        fecha = fechaSeleccionada,
+                        tipo = if (tipo == "Ingreso") {
+                            TipoMovimiento.INGRESO
+                        } else {
+                            TipoMovimiento.GASTO
+                        }
+                    )
+
+                    val actualizado = control.actualizar(
+                        movimientoActualizado
+                    )
+
+                    if (!actualizado) {
+                        Toast.makeText(
+                            this@RegistrarMovimientoActivity,
+                            "No se pudieron guardar los cambios",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@launch
+                    }
+
+                    Toast.makeText(
+                        this@RegistrarMovimientoActivity,
+                        "Movimiento actualizado correctamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                } else {
+                    // Registrar un movimiento nuevo.
+                    if (tipo == "Ingreso") {
+                        control.registrarIngreso(
+                            descripcion = descripcion,
+                            monto = monto,
+                            categoria = categoria,
+                            fecha = fechaSeleccionada
+                        )
+                    } else {
+                        control.registrarGasto(
+                            descripcion = descripcion,
+                            monto = monto,
+                            categoria = categoria,
+                            fecha = fechaSeleccionada
+                        )
+                    }
+
+                    Toast.makeText(
+                        this@RegistrarMovimientoActivity,
+                        "$tipo registrado correctamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
                 finish()
 
             } catch (e: Exception) {
                 Toast.makeText(
                     this@RegistrarMovimientoActivity,
-                    "No se pudo registrar: ${e.message}",
+                    "No se pudo guardar: ${e.message}",
                     Toast.LENGTH_LONG
                 ).show()
-
+            } finally {
                 binding.btnGuardarMovimiento.isEnabled = true
             }
         }
+    }
+
+    private fun confirmarEliminacion() {
+        AlertDialog.Builder(this)
+            .setTitle("Eliminar movimiento")
+            .setMessage("¿Estás seguro de que deseas eliminar este movimiento?")
+            .setNegativeButton("Cancelar", null)
+            .setPositiveButton("Eliminar") { _, _ ->
+                lifecycleScope.launch {
+                    try {
+                        val eliminado = ControlGastosProvider.instancia
+                            .eliminar(movimientoId)
+
+                        if (eliminado) {
+                            Toast.makeText(
+                                this@RegistrarMovimientoActivity,
+                                "Movimiento eliminado",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            finish()
+                        } else {
+                            Toast.makeText(
+                                this@RegistrarMovimientoActivity,
+                                "No se pudo eliminar el movimiento",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            this@RegistrarMovimientoActivity,
+                            "Error al eliminar: ${e.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+            .show()
     }
 }

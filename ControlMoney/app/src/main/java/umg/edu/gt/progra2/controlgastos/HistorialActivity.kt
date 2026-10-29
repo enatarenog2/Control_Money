@@ -212,6 +212,16 @@ class HistorialActivity : AppCompatActivity() {
         tarjeta.addView(detalle)
         tarjeta.addView(monto)
 
+        tarjeta.setOnClickListener {
+            val intent = android.content.Intent(
+                this,
+                RegistrarMovimientoActivity::class.java
+            )
+
+            intent.putExtra("movimiento_id", gasto.id)
+            startActivity(intent)
+        }
+
         return tarjeta
     }
 
