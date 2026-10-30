@@ -146,6 +146,14 @@
                     android:layout_marginTop="19dp"
                     android:background="#45FFFFFF" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Balance total del mes"
+                    android:textColor="#F0E9FF"
+                    android:textSize="12sp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -160,13 +168,6 @@
                         app:tint="#6D28D9"
                         android:contentDescription="Finanzas" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="Balance total"
-                        android:textColor="#F0E9FF"
-                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
 

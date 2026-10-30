@@ -8,6 +8,8 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import umg.edu.gt.progra2.controlgastos.databinding.ActivityInicioBinding
 import java.util.Locale
+import umg.edu.gt.progra2.controlgastos.modelo.TipoMovimiento
+import java.time.YearMonth
 
 class InicioActivity : AppCompatActivity() {
 
@@ -70,15 +72,37 @@ class InicioActivity : AppCompatActivity() {
         actualizarResumen()
     }
 
+
     private fun actualizarResumen() {
         lifecycleScope.launch {
             try {
                 val control = ControlGastosProvider.instancia
 
-                val ingresos = control.calcularTotalIngresos()
-                val gastos = control.calcularTotalGastos()
-                val saldo = control.calcularSaldo()
+                // Obtener todos los movimientos registrados.
+                val todosLosMovimientos = control.obtenerTodos()
 
+                // Identificar el mes y año actuales.
+                val mesActual = YearMonth.now()
+
+                // Filtrar únicamente los movimientos del mes actual.
+                val movimientosDelMes = todosLosMovimientos.filter {
+                    YearMonth.from(it.fecha) == mesActual
+                }
+
+                // Calcular los ingresos del mes.
+                val ingresos = movimientosDelMes
+                    .filter { it.tipo == TipoMovimiento.INGRESO }
+                    .sumOf { it.monto }
+
+                // Calcular los gastos del mes.
+                val gastos = movimientosDelMes
+                    .filter { it.tipo == TipoMovimiento.GASTO }
+                    .sumOf { it.monto }
+
+                // Calcular el balance mensual.
+                val saldo = ingresos - gastos
+
+                // Actualizar las tarjetas de la pantalla principal.
                 binding.tvTotalIngresos.text =
                     formatoQuetzales(ingresos)
 
@@ -97,6 +121,7 @@ class InicioActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun formatoQuetzales(monto: Double): String {
         return String.format(Locale.US, "Q %,.2f", monto)

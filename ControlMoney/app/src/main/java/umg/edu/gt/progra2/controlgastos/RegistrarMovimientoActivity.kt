@@ -13,8 +13,8 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import androidx.appcompat.app.AlertDialog
-import umg.edu.gt.progra2.controlgastos.modelo.Gasto
 import umg.edu.gt.progra2.controlgastos.modelo.TipoMovimiento
+import android.widget.AdapterView
 
 class RegistrarMovimientoActivity : AppCompatActivity() {
 
@@ -35,6 +35,7 @@ class RegistrarMovimientoActivity : AppCompatActivity() {
         "Entretenimiento",
         "Otros"
     )
+    private var mostrandoNoAplica = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,25 +123,82 @@ class RegistrarMovimientoActivity : AppCompatActivity() {
     }
 
     private fun configurarDesplegables() {
+
         val adaptadorTipos = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
             tiposMovimiento
         )
+
         adaptadorTipos.setDropDownViewResource(
             android.R.layout.simple_spinner_dropdown_item
         )
+
         binding.spTipoMovimiento.adapter = adaptadorTipos
 
-        val adaptadorCategorias = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            categorias
-        )
-        adaptadorCategorias.setDropDownViewResource(
-            android.R.layout.simple_spinner_dropdown_item
-        )
-        binding.spCategoriaMovimiento.adapter = adaptadorCategorias
+        actualizarEstadoCategoria()
+
+        binding.spTipoMovimiento.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: android.view.View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    actualizarEstadoCategoria()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                }
+            }
+    }
+    private fun actualizarEstadoCategoria() {
+
+        val tipoSeleccionado =
+            binding.spTipoMovimiento.selectedItem.toString()
+
+        if (tipoSeleccionado == "Ingreso") {
+
+            if (!mostrandoNoAplica) {
+                val adaptador = ArrayAdapter(
+                    this,
+                    android.R.layout.simple_spinner_item,
+                    listOf("No aplica")
+                )
+
+                adaptador.setDropDownViewResource(
+                    android.R.layout.simple_spinner_dropdown_item
+                )
+
+                binding.spCategoriaMovimiento.adapter = adaptador
+                mostrandoNoAplica = true
+            }
+
+            binding.spCategoriaMovimiento.isEnabled = false
+            binding.spCategoriaMovimiento.alpha = 0.5f
+
+        } else {
+
+            if (mostrandoNoAplica) {
+                val adaptador = ArrayAdapter(
+                    this,
+                    android.R.layout.simple_spinner_item,
+                    categorias
+                )
+
+                adaptador.setDropDownViewResource(
+                    android.R.layout.simple_spinner_dropdown_item
+                )
+
+                binding.spCategoriaMovimiento.adapter = adaptador
+                mostrandoNoAplica = false
+            }
+
+            binding.spCategoriaMovimiento.isEnabled = true
+            binding.spCategoriaMovimiento.alpha = 1f
+        }
     }
 
     private fun configurarFecha() {
@@ -212,15 +270,19 @@ class RegistrarMovimientoActivity : AppCompatActivity() {
             return
         }
 
-        val nombreCategoria =
-            binding.spCategoriaMovimiento.selectedItem.toString()
+        val categoria = if (tipo == "Ingreso") {
+            Categoria.OTROS
+        } else {
+            val nombreCategoria =
+                binding.spCategoriaMovimiento.selectedItem.toString()
 
-        val categoria = when (nombreCategoria) {
-            "Alimentos" -> Categoria.ALIMENTOS
-            "Transporte" -> Categoria.TRANSPORTE
-            "Servicios" -> Categoria.SERVICIOS
-            "Entretenimiento" -> Categoria.ENTRETENIMIENTO
-            else -> Categoria.OTROS
+            when (nombreCategoria) {
+                "Alimentos" -> Categoria.ALIMENTOS
+                "Transporte" -> Categoria.TRANSPORTE
+                "Servicios" -> Categoria.SERVICIOS
+                "Entretenimiento" -> Categoria.ENTRETENIMIENTO
+                else -> Categoria.OTROS
+            }
         }
 
         binding.btnGuardarMovimiento.isEnabled = false

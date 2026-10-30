@@ -53,7 +53,7 @@
             android:orientation="vertical"
             android:background="@drawable/fondo_boton_morado"
             android:padding="22dp"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="16dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -79,10 +79,9 @@
                 android:text="Ingresos menos gastos"
                 android:textColor="#EDE4FF"
                 android:textSize="14sp" />
-
         </LinearLayout>
 
-        <!-- Total de ingresos -->
+        <!-- Totales financieros -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -108,10 +107,7 @@
                 android:textColor="#238653"
                 android:textSize="23sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
-
-        <!-- Total de gastos -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -137,6 +133,73 @@
                 android:textColor="#D14343"
                 android:textSize="23sp"
                 android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Comparación de los últimos seis meses -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Comparación mensual"
+            android:textColor="#302443"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="6dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingresos y gastos de los últimos 6 meses"
+            android:textColor="#716B80"
+            android:textSize="14sp"
+            android:layout_marginBottom="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fondo_tarjeta"
+            android:orientation="vertical"
+            android:padding="18dp"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
+
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:background="#238653" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  Ingresos"
+                    android:textColor="#302443"
+                    android:textSize="13sp"
+                    android:layout_marginEnd="18dp" />
+
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:background="#6D28D9" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  Gastos"
+                    android:textColor="#302443"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/contenedorComparacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
 
         </LinearLayout>
 
@@ -158,9 +221,7 @@
             android:background="@drawable/fondo_tarjeta"
             android:orientation="vertical"
             android:padding="18dp"
-            android:layout_marginBottom="20dp">
-
-        </LinearLayout>
+            android:layout_marginBottom="20dp" />
 
         <Button
             android:id="@+id/btnVolverInicioReportes"
@@ -174,5 +235,4 @@
             android:textSize="16sp" />
 
     </LinearLayout>
-
 </ScrollView>
