@@ -16,6 +16,7 @@ import umg.edu.gt.progra2.controlgastos.modelo.TipoMovimiento
 import java.util.Locale
 import android.graphics.Color
 import android.graphics.Typeface
+import umg.edu.gt.progra2.controlgastos.modelo.Categoria
 
 class HistorialActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHistorialBinding
@@ -143,75 +144,155 @@ class HistorialActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun formatoQuetzales(monto: Double): String {
+        return String.format(Locale.US, "Q %,.2f", monto)
+    }
+
+
     private fun crearTarjetaMovimiento(gasto: Gasto): LinearLayout {
+
         val esIngreso = gasto.tipo == TipoMovimiento.INGRESO
 
+
+        val colorPrincipal = if (esIngreso) {
+            Color.rgb(35, 134, 83)       // Verde para ingresos
+        } else {
+            Color.rgb(209, 67, 67)       // Rojo para gastos
+        }
+
+        val colorFondo = if (esIngreso) {
+            Color.rgb(232, 245, 236)     // Fondo verde claro
+        } else {
+            Color.rgb(253, 236, 236)     // Fondo rojo claro
+        }
+
+// Seleccionar icono según el movimiento.
+        val icono = if (esIngreso) {
+
+            if (
+                gasto.descripcion.contains("sueldo", ignoreCase = true) ||
+                gasto.descripcion.contains("salario", ignoreCase = true)
+            ) {
+                "Q"
+            } else {
+                "💰"
+            }
+
+        } else {
+
+            when (gasto.categoria) {
+                Categoria.ALIMENTOS -> "🛒"
+                Categoria.TRANSPORTE -> "🚗"
+                Categoria.SERVICIOS -> "💡"
+                Categoria.ENTRETENIMIENTO -> "🎬"
+                Categoria.OTROS -> "📦"
+            }
+        }
+
+        val signo = if (esIngreso) "+" else "−"
+
         val tarjeta = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(32, 28, 32, 28)
+            orientation = LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            setPadding(16, 18, 16, 18)
             setBackgroundResource(R.drawable.fondo_tarjeta)
 
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                bottomMargin = 24
+                bottomMargin = dp(12)
             }
+        }
+
+        // Icono del movimiento.
+        val contenedorIcono = TextView(this).apply {
+                text = icono
+                textSize = 27f
+                gravity = android.view.Gravity.CENTER
+        }
+
+        tarjeta.addView(
+            contenedorIcono,
+            LinearLayout.LayoutParams(dp(46), dp(46)).apply {
+                marginEnd = dp(12)
+            }
+        )
+
+        // Información del movimiento.
+        val informacion = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
         }
 
         val titulo = TextView(this).apply {
             text = gasto.descripcion
-            textSize = 17f
+            textSize = 15f
             setTextColor(Color.rgb(48, 36, 67))
             setTypeface(null, Typeface.BOLD)
+            maxLines = 1
+            ellipsize = android.text.TextUtils.TruncateAt.END
         }
 
-        val tipoTexto = getString(
-            if (esIngreso) {
-                R.string.movement_type_income
-            } else {
-                R.string.movement_type_expense
+        val tipoTexto = if (esIngreso) "Ingreso" else "Gasto"
+
+        val categoria = if (esIngreso) {
+            "No aplica"
+        } else {
+            gasto.categoria.name
+                .lowercase(Locale("es", "GT"))
+                .replaceFirstChar { it.uppercase() }
+        }
+
+        val detalle = TextView(this).apply {
+            text = "$tipoTexto · $categoria"
+            textSize = 12f
+            setTextColor(Color.rgb(113, 107, 128))
+            setPadding(0, dp(4), 0, 0)
+        }
+
+        val fecha = TextView(this).apply {
+            text = gasto.fecha.toString()
+            textSize = 11f
+            setTextColor(Color.rgb(145, 139, 158))
+            setPadding(0, dp(3), 0, 0)
+        }
+
+        informacion.addView(titulo)
+        informacion.addView(detalle)
+        informacion.addView(fecha)
+
+        tarjeta.addView(
+            informacion,
+            LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+        )
+
+        // Monto del movimiento.
+        val monto = TextView(this).apply {
+            text = "$signo${formatoQuetzales(gasto.monto)}"
+            textSize = 13f
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(colorPrincipal)
+            gravity = android.view.Gravity.END
+            maxLines = 1
+        }
+
+        tarjeta.addView(
+            monto,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                marginStart = dp(6)
             }
         )
 
-        val detalle = TextView(this).apply {
-            text = getString(
-                R.string.movement_detail,
-                tipoTexto,
-                gasto.categoria.name,
-                gasto.fecha.toString()
-            )
-            textSize = 14f
-            setTextColor(Color.rgb(113, 107, 128))
-            setPadding(0, 12, 0, 0)
-        }
-
-        val signo = if (esIngreso) "+" else "−"
-
-        val monto = TextView(this).apply {
-            text = getString(
-                R.string.movement_amount,
-                signo,
-                formatoQuetzales(gasto.monto)
-            )
-            textSize = 18f
-            setTypeface(null, Typeface.BOLD)
-
-            setTextColor(
-                if (esIngreso) {
-                    Color.rgb(35, 134, 83)
-                } else {
-                    Color.rgb(209, 67, 67)
-                }
-            )
-
-            setPadding(0, 20, 0, 0)
-        }
-
-        tarjeta.addView(titulo)
-        tarjeta.addView(detalle)
-        tarjeta.addView(monto)
-
+        // Abrir el movimiento para editarlo.
         tarjeta.setOnClickListener {
             val intent = android.content.Intent(
                 this,
@@ -225,8 +306,9 @@ class HistorialActivity : AppCompatActivity() {
         return tarjeta
     }
 
-    private fun formatoQuetzales(monto: Double): String {
-        return String.format(Locale.US, "Q %,.2f", monto)
+    private fun dp(valor: Int): Int {
+        return (valor * resources.displayMetrics.density).toInt()
     }
+
 
 }
