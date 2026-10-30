@@ -122,8 +122,10 @@ class RegistrarMovimientoActivity : AppCompatActivity() {
         }
     }
 
+
     private fun configurarDesplegables() {
 
+        // Adaptador para el tipo de movimiento
         val adaptadorTipos = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
@@ -136,8 +138,23 @@ class RegistrarMovimientoActivity : AppCompatActivity() {
 
         binding.spTipoMovimiento.adapter = adaptadorTipos
 
-        actualizarEstadoCategoria()
+        // IMPORTANTE: cargar las categorías desde el inicio
+        val adaptadorCategorias = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            categorias
+        )
 
+        adaptadorCategorias.setDropDownViewResource(
+            android.R.layout.simple_spinner_dropdown_item
+        )
+
+        binding.spCategoriaMovimiento.adapter = adaptadorCategorias
+
+        // Al inicio se muestran las categorías
+        mostrandoNoAplica = false
+
+        // Escuchar los cambios en el tipo de movimiento
         binding.spTipoMovimiento.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
 
@@ -150,10 +167,17 @@ class RegistrarMovimientoActivity : AppCompatActivity() {
                     actualizarEstadoCategoria()
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
+
+        // Actualizar el estado cuando el Spinner termine de inicializarse
+        binding.spTipoMovimiento.post {
+            actualizarEstadoCategoria()
+        }
     }
+
+
+
     private fun actualizarEstadoCategoria() {
 
         val tipoSeleccionado =
